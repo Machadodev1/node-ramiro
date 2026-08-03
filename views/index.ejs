@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALQUIPC - Alquiler de Equipos</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>ALQUIPC</h1>
+            <p>Alquiler de equipos de cómputo portátiles</p>
+        </header>
+
+        <section class="card">
+            <h2>Formulario de Facturación</h2>
+            <p class="subtitle">Valor del alquiler por día: <strong>$35.000</strong> por equipo</p>
+
+            <form action="/calcular" method="POST" class="form">
+                <div class="form-group">
+                    <label for="cantidadEquipos">Número de equipos a alquilar (mínimo 2)</label>
+                    <input type="number" id="cantidadEquipos" name="cantidadEquipos" min="2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="diasIniciales">Días iniciales de alquiler</label>
+                    <input type="number" id="diasIniciales" name="diasIniciales" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="diasAdicionales">Días adicionales (opcional)</label>
+                    <input type="number" id="diasAdicionales" name="diasAdicionales" min="0" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Opción de alquiler</label>
+                    <div class="radio-group">
+                        <label class="radio">
+                            <input type="radio" name="tipoAlquiler" value="ciudad" required>
+                            <span>Dentro de la ciudad</span>
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="tipoAlquiler" value="fuera">
+                            <span>Fuera de la ciudad (+5%)</span>
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="tipoAlquiler" value="establecimiento">
+                            <span>Dentro del establecimiento (-5%)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Calcular Factura</button>
+            </form>
+        </section>
+    </div>
+</body>
+</html>
