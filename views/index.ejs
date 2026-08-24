@@ -3,57 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALQUIPC - Alquiler de Equipos</title>
+    <title>ALQUIPC - Calcular factura</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>ALQUIPC</h1>
-            <p>Alquiler de equipos de cómputo portátiles</p>
+            <div class="brand-badge">ALQUIPC</div>
+            <h1>Gestión de alquileres</h1>
+            <p>Solución rápida y segura para cotizar equipamiento portátil</p>
         </header>
 
-        <section class="card">
-            <h2>Formulario de Facturación</h2>
-            <p class="subtitle">Valor del alquiler por día: <strong>$35.000</strong> por equipo</p>
-
-            <form action="/calcular" method="POST" class="form">
-                <div class="form-group">
-                    <label for="cantidadEquipos">Número de equipos a alquilar (mínimo 2)</label>
-                    <input type="number" id="cantidadEquipos" name="cantidadEquipos" min="2" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="diasIniciales">Días iniciales de alquiler</label>
-                    <input type="number" id="diasIniciales" name="diasIniciales" min="1" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="diasAdicionales">Días adicionales (opcional)</label>
-                    <input type="number" id="diasAdicionales" name="diasAdicionales" min="0" value="0">
-                </div>
-
-                <div class="form-group">
-                    <label>Opción de alquiler</label>
-                    <div class="radio-group">
-                        <label class="radio">
-                            <input type="radio" name="tipoAlquiler" value="ciudad" required>
-                            <span>Dentro de la ciudad</span>
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="tipoAlquiler" value="fuera">
-                            <span>Fuera de la ciudad (+5%)</span>
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="tipoAlquiler" value="establecimiento">
-                            <span>Dentro del establecimiento (-5%)</span>
-                        </label>
+        <main class="page-layout">
+            <section class="card form-card">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">Nueva solicitud</p>
+                        <h2>Formulario de facturación</h2>
                     </div>
+                    <span class="price-tag">$35.000 / día</span>
                 </div>
 
-                <button type="submit" class="btn">Calcular Factura</button>
-            </form>
-        </section>
+                <% if (error) { %>
+                    <div class="alert error">
+                        <strong>Validación:</strong> <%= error %>
+                    </div>
+                <% } %>
+
+                <form action="/calcular" method="POST" class="form">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="nombreCliente">Nombre del cliente</label>
+                            <input type="text" id="nombreCliente" name="nombreCliente" value="<%= formData.nombreCliente || '' %>" placeholder="Ej: Ana Gómez" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="correoCliente">Correo electrónico</label>
+                            <input type="email" id="correoCliente" name="correoCliente" value="<%= formData.correoCliente || '' %>" placeholder="Ej: ana@empresa.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cantidadEquipos">Número de equipos</label>
+                            <input type="number" id="cantidadEquipos" name="cantidadEquipos" min="2" step="1" value="<%= formData.cantidadEquipos || '' %>" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="diasIniciales">Días iniciales</label>
+                            <input type="number" id="diasIniciales" name="diasIniciales" min="1" step="1" value="<%= formData.diasIniciales || '' %>" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="diasAdicionales">Días adicionales</label>
+                            <input type="number" id="diasAdicionales" name="diasAdicionales" min="0" step="1" value="<%= formData.diasAdicionales ?? 0 %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Opción de alquiler</label>
+                        <div class="radio-group">
+                            <label class="radio">
+                                <input type="radio" name="tipoAlquiler" value="ciudad" <%= formData.tipoAlquiler === 'ciudad' ? 'checked' : '' %> required>
+                                <span>Dentro de la ciudad</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="tipoAlquiler" value="fuera" <%= formData.tipoAlquiler === 'fuera' ? 'checked' : '' %>>
+                                <span>Fuera de la ciudad (+5%)</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="tipoAlquiler" value="establecimiento" <%= formData.tipoAlquiler === 'establecimiento' ? 'checked' : '' %>>
+                                <span>Dentro del establecimiento (-5%)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">Calcular factura</button>
+                </form>
+            </section>
+
+            <aside class="card side-card">
+                <p class="eyebrow">Normas de negocio</p>
+                <h3>Reglas clave</h3>
+                <ul class="rule-list">
+                    <li>Mínimo de 2 equipos por operación.</li>
+                    <li>El periodo base debe tener al menos 1 día.</li>
+                    <li>Los días adicionales no pueden superar los iniciales.</li>
+                    <li>El alquiler fuera de la ciudad aplica un incremento del 5%.</li>
+                    <li>El alquiler en establecimiento aplica un descuento del 5%.</li>
+                </ul>
+            </aside>
+        </main>
     </div>
 </body>
 </html>

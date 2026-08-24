@@ -9,21 +9,36 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>ALQUIPC</h1>
-            <p>Factura de alquiler de equipos</p>
+            <div class="brand-badge">ALQUIPC</div>
+            <h1>Factura emitida</h1>
+            <p>Resumen final del servicio de alquiler</p>
         </header>
 
-        <section class="card">
-            <h2>Detalle de Facturación</h2>
+        <section class="card result-card">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Comprobante</p>
+                    <h2>Detalle de facturación</h2>
+                </div>
+                <span class="status-pill">Activa</span>
+            </div>
 
-            <div class="result-grid">
+            <div class="result-grid">                <div class="result-item accent">
+                    <span class="label">Cliente</span>
+                    <span class="value"><%= nombreCliente %></span>
+                </div>
+
                 <div class="result-item">
+                    <span class="label">Correo</span>
+                    <span class="value"><%= correoCliente %></span>
+                </div>
+                <div class="result-item accent">
                     <span class="label">ID Cliente</span>
                     <span class="value"><%= idCliente %></span>
                 </div>
 
                 <div class="result-item">
-                    <span class="label">Opción de alquiler</span>
+                    <span class="label">Opción</span>
                     <span class="value">
                         <% if (tipoAlquiler === "fuera") { %>
                             Fuera de la ciudad
@@ -36,7 +51,7 @@
                 </div>
 
                 <div class="result-item">
-                    <span class="label">Equipos alquilados</span>
+                    <span class="label">Equipos</span>
                     <span class="value"><%= cantidadEquipos %></span>
                 </div>
 
@@ -65,21 +80,21 @@
                 <% } %>
 
                 <% if (incremento > 0) { %>
-                    <div class="total-row">
+                    <div class="total-row warning">
                         <span>Incremento (+5%) por servicio fuera de la ciudad</span>
                         <span>$<%= incremento.toLocaleString("es-CO") %></span>
                     </div>
                 <% } %>
 
                 <% if (descuento > 0) { %>
-                    <div class="total-row">
+                    <div class="total-row success">
                         <span>Descuento (-5%) por alquiler en establecimiento</span>
                         <span>-$<%= descuento.toLocaleString("es-CO") %></span>
                     </div>
                 <% } %>
 
                 <% if (descuentoDias > 0) { %>
-                    <div class="total-row">
+                    <div class="total-row success">
                         <span>Descuento por días adicionales (<%= (porcentajeDias * 100) %>%)</span>
                         <span>-$<%= descuentoDias.toLocaleString("es-CO") %></span>
                     </div>
@@ -94,10 +109,12 @@
             <p class="mensaje"><%= mensaje %></p>
 
             <div class="email-note">
-                <p>📧 Este recibo será enviado al correo electrónico del cliente.</p>
+                <p>📧 La factura será cargada a <strong><%= nombreCliente %></strong> en el correo <strong><%= correoCliente %></strong>.</p>
             </div>
 
-            <a href="/" class="btn btn-secondary">Nueva Factura</a>
+            <div class="actions">
+                <a href="/" class="btn btn-primary">Nueva factura</a>
+            </div>
         </section>
     </div>
 </body>
