@@ -26,6 +26,17 @@ app.use((req, res) => {
     res.status(404).send("Página no encontrada");
 });
 
+// Middleware global para errores inesperados y evitar pantallazos blancos
+app.use((err, req, res, next) => {
+    console.error("Error no controlado:", err);
+
+    if (res.headersSent) {
+        return next(err);
+    }
+
+    res.status(500).send("No se pudo procesar la solicitud. Verifique los datos e intente nuevamente.");
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

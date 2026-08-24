@@ -21,8 +21,23 @@ const normalizarNumero = (valor) => {
     return Number.isFinite(numero) ? numero : NaN;
 };
 
+const calcularDescuentoDiasAdicionales = (diasAdicionales) => {
+    if (!Number.isInteger(diasAdicionales) || diasAdicionales <= 0) {
+        return { porcentaje: 0, descuento: 0 };
+    }
+
+    const bloquesDeTres = Math.floor(diasAdicionales / 3);
+    const porcentaje = Math.min(bloquesDeTres * 0.02, 0.2);
+
+    return {
+        porcentaje,
+        descuento: porcentaje
+    };
+};
+
 const calcularFactura = (req, res) => {
-    const formData = { ...req.body };
+    const body = req.body && typeof req.body === "object" ? req.body : {};
+    const formData = { ...body };
 
     let {
         cantidadEquipos,
@@ -31,7 +46,7 @@ const calcularFactura = (req, res) => {
         tipoAlquiler,
         nombreCliente,
         correoCliente
-    } = req.body;
+    } = body;
 
     cantidadEquipos = normalizarNumero(cantidadEquipos);
     diasIniciales = normalizarNumero(diasIniciales);
@@ -115,7 +130,9 @@ const calcularFactura = (req, res) => {
 
     if (diasAdicionales > 0) {
         valorDiasExtra = cantidadEquipos * diasAdicionales * VALOR_DIA;
-        porcentajeDias = 0.02;
+
+        const descuentoCalculado = calcularDescuentoDiasAdicionales(diasAdicionales);
+        porcentajeDias = descuentoCalculado.porcentaje;
         descuentoDias = valorDiasExtra * porcentajeDias;
 
         total += valorDiasExtra;
